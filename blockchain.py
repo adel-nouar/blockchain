@@ -9,7 +9,7 @@ def get_last_blockchain_value():
 
 def add_value(transaction_amount, last_transaction=[1]):
     """ Append a new value as well as the last blockchain value to the blockchain. 
-    
+
     Arguments: 
         :transaction_amount: The amount that should be added.
         :last_transaction: The last blockchain transaction (default [1]).
