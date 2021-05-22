@@ -41,12 +41,16 @@ while True:
     print('Please choose:')
     print('1: Add a new transaction value')
     print('2: Output the blockchain blocks')
+    print('h: Manipulate the chain')
     print('q: Quit')
     user_choice = get_user_choice()
     if user_choice == '1':
         add_transaction(get_transaction_value(), get_last_blockchain_value())
     elif user_choice == '2':
         print_blockchain_elements()
+    elif user_choice == 'h':
+        if len(blockchain) >= 1:
+            blockchain[0] = [2]
     elif user_choice == 'q':
         break
     else:
