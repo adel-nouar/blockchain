@@ -10,9 +10,9 @@ def get_last_blockchain_value():
 
 
 def add_transaction(transaction_amount, last_transaction=[1]):
-    """ Append a new value as well as the last blockchain value to the blockchain. 
+    """ Append a new value as well as the last blockchain value to the blockchain.
 
-    Arguments: 
+    Arguments:
         :transaction_amount: The amount that should be added.
         :last_transaction: The last blockchain transaction (default [1]).
     """
@@ -35,25 +35,36 @@ def print_blockchain_elements():
     for block in blockchain:
         print('Outputing Block')
         print(block)
+    else:
+        print('_' * 20)
 
 
 def verify_chain():
     block_index = 0
     is_valid = True
-    for block in blockchain:
+    for block_index in range(len(blockchain)):
         if block_index == 0:
-            block_index += 1
             continue
-        elif block[0] == blockchain[block_index - 1]:
+        elif blockchain[block_index][0] == blockchain[block_index - 1]:
             is_valid = True
         else:
             is_valid = False
             break
-        block_index += 1
+    # for block in blockchain:
+    #     if block_index == 0:
+    #         block_index += 1
+    #         continue
+    #     elif block[0] == blockchain[block_index - 1]:
+    #         is_valid = True
+    #     else:
+    #         is_valid = False
+    #         break
+    #     block_index += 1
     return is_valid
 
 
-while True:
+user_choice = None
+while user_choice != 'q':
     print('Please choose:')
     print('1: Add a new transaction value')
     print('2: Output the blockchain blocks')
@@ -74,4 +85,6 @@ while True:
     if not verify_chain():
         print('Invalid blockchain!')
         break
+else:
+    print('User left!')
 print('Done')
