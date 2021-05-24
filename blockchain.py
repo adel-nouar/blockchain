@@ -7,6 +7,7 @@ genesis_block = {
 blockchain = [genesis_block]
 open_transactions = []
 owner = 'Someone'
+participants = {owner}
 
 
 def hash_block(block):
@@ -33,6 +34,8 @@ def add_transaction(recipient, sender=owner, amount=1.0):
         'recipient': recipient,
         'amount': amount}
     open_transactions.append(transaction)
+    participants.add(sender)
+    participants.add(recipient)
 
 
 def mine_block():
@@ -82,6 +85,7 @@ while user_choice != 'q':
     print('1: Add a new transaction value')
     print('2: Mine a new block')
     print('3: Output the blockchain blocks')
+    print('4: Output participants')
     print('h: Manipulate the chain')
     print('q: Quit')
     user_choice = get_user_choice()
@@ -99,6 +103,8 @@ while user_choice != 'q':
                 'index': 0,
                 'transactions': [{'sender': 'Chris', 'recipient': 'Max', 'amount': 100.0}]
             }
+    elif user_choice == '4':
+        print(participants)
     elif user_choice == 'q':
         break
     else:
