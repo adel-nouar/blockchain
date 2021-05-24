@@ -82,11 +82,12 @@ def mine_block():
         'recipient': owner,
         'amount': MINING_REWARD
     }
-    open_transactions.append(reward_transaction)
+    copied_transaction = open_transactions.copy()
+    copied_transaction.append(reward_transaction)
     block = {
         'previous_hash': hashed_block,
         'index': len(blockchain),
-        'transactions': open_transactions
+        'transactions': copied_transaction
     }
     blockchain.append(block)
     return True
@@ -122,6 +123,17 @@ def verify_chain():
     return True
 
 
+def verify_transactions():
+    return all([verify_transaction(tx) for tx in open_transactions])
+    # is_valid = True
+    # for tx in open_transactions:
+    #     if verify_transaction(tx):
+    #         is_valid = True
+    #     else:
+    #         is_valid = False
+    # return is_valid
+
+
 user_choice = None
 while user_choice != 'q':
     print('Please choose:')
@@ -129,6 +141,7 @@ while user_choice != 'q':
     print('2: Mine a new block')
     print('3: Output the blockchain blocks')
     print('4: Output participants')
+    print('5: Check transaction validity')
     print('h: Manipulate the chain')
     print('q: Quit')
     user_choice = get_user_choice()
@@ -143,6 +156,13 @@ while user_choice != 'q':
             open_transactions = []
     elif user_choice == '3':
         print_blockchain_elements()
+    elif user_choice == '4':
+        print(participants)
+    elif user_choice == '5':
+        if verify_transactions():
+            print('All verified transactions are valid')
+        else:
+            print('There are invalid transactions')
     elif user_choice == 'h':
         if len(blockchain) >= 1:
             blockchain[0] = {
@@ -150,8 +170,7 @@ while user_choice != 'q':
                 'index': 0,
                 'transactions': [{'sender': 'Chris', 'recipient': 'Max', 'amount': 100.0}]
             }
-    elif user_choice == '4':
-        print(participants)
+
     elif user_choice == 'q':
         break
     else:
