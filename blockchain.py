@@ -27,7 +27,7 @@ def get_balance(participant):
     tx_sender.append(open_tx_sender)
     amount_sent = functools.reduce(
         lambda tx_sum, tx_amt: tx_sum +
-        tx_amt[0] if len(tx_amt) > 0 else 0, tx_sender, 0
+        sum(tx_amt) if len(tx_amt) > 0 else tx_sum + 0, tx_sender, 0
     )
     # amount_sent = 0
     # for tx in tx_sender:
@@ -38,7 +38,7 @@ def get_balance(participant):
                      if tx['recipient'] == participant] for block in blockchain]
     amount_received = functools.reduce(
         lambda tx_sum, tx_amt: tx_sum +
-        tx_amt[0] if len(tx_amt) > 0 else 0, tx_recipient, 0
+        sum(tx_amt) if len(tx_amt) > 0 else tx_sum + 0, tx_recipient, 0
     )
     # amount_received = 0
     # for tx in tx_recipient:
