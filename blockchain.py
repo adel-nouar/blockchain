@@ -1,4 +1,6 @@
 import functools
+import hashlib
+import json
 # The reward we give to miners (for creating a new bloc)
 MINING_REWARD = 10
 
@@ -16,7 +18,7 @@ participants = {owner}
 
 
 def hash_block(block):
-    return '-'.join([str(block[key]) for key in block])
+    return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
 
 def get_balance(participant):
