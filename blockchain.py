@@ -21,6 +21,22 @@ def hash_block(block):
     return hl.sha256(json.dumps(block).encode()).hexdigest()
 
 
+def valid_proof(transactions, last_hash, proof):
+    guess = (str(transactions) + str(last_hash) + str(proof)).encode()
+    guess_hash = hl.sha256(guess).hexdigest()
+    print(guess_hash)
+    return guess_hash[0:2] == '00'
+
+
+def proof_of_work():
+    last_block = blockchain[-1]
+    last_hash = hash_block(last_block)
+    proof = 0
+    while valid_proof(open_transactions, last_hash, proof):
+        proof += 1
+    return proof
+
+
 def get_balance(participant):
     tx_sender = [[tx['amount'] for tx in block['transactions']
                   if tx['sender'] == participant] for block in blockchain]
