@@ -11,6 +11,7 @@ from transaction import Transaction
 
 # The reward we give to miners (for creating a new bloc)
 MINING_REWARD = 10
+print(__name__)
 
 
 class Blockchain:
@@ -23,15 +24,15 @@ class Blockchain:
         self.__open_transactions = []
         self.load_data()
         self.hosting_node = hosting_node_id
-    
+
     @property
     def chain(self):
         return self.__chain[:]
-    
+
     @chain.setter
     def chain(self, val):
         self.__chain = val
-    
+
     def get_open_transactions(self):
         return self.__open_transactions[:]
 
@@ -166,7 +167,8 @@ class Blockchain:
         # This ensures that if for some reason the mining should fail, we don't have the reward transaction stored in the open transactions
         copied_transaction = self.__open_transactions.copy()
         copied_transaction.append(reward_transaction)
-        block = Block(len(self.__chain), hashed_block, copied_transaction, proof)
+        block = Block(len(self.__chain), hashed_block,
+                      copied_transaction, proof)
 
         self.__chain.append(block)
 
