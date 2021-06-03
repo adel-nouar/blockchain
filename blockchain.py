@@ -4,10 +4,10 @@ import hashlib as hl
 import json
 import pickle
 
+from utility.hash_util import hash_block
+from utility.verification import Verification
 from block import Block
 from transaction import Transaction
-from verification import Verification
-from hash_util import hash_block
 
 # The reward we give to miners (for creating a new bloc)
 MINING_REWARD = 10
