@@ -38,6 +38,8 @@ class Node:
             print('2: Mine a new block')
             print('3: Output the blockchain blocks')
             print('4: Check transaction validity')
+            print('5: Create wallet')
+            print('6: Load wallet')
             print('q: Quit')
             user_choice = self.get_user_choice()
             if user_choice == '1':
