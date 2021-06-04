@@ -1,13 +1,14 @@
 from blockchain import Blockchain
 from utility.verification import Verification
 from uuid import uuid4
+from wallet import Wallet
 
 
 class Node:
     def __init__(self):
         # self.id = str(uuid4())
-        self.id = 'Someone'
-        self.blockchain = Blockchain(self.id)
+        self.wallet = Wallet()
+        self.blockchain = Blockchain(self.wallet.public_key)
 
     def get_transaction_value(self):
         """ Returns the input of the user (a new transaction amount) as a float. """
@@ -45,7 +46,7 @@ class Node:
             if user_choice == '1':
                 recipient, amount = self.get_transaction_value()
                 # Add the transaction amount to the blockchain
-                if self.blockchain.add_transaction(recipient, self.id, amount=amount):
+                if self.blockchain.add_transaction(recipient, self.wallet.public_key, amount=amount):
                     print('Added transaction!')
                 else:
                     print('Transaction failed!')
@@ -59,6 +60,10 @@ class Node:
                     print('All verified transactions are valid')
                 else:
                     print('There are invalid transactions')
+            elif user_choice == '5':
+                self.wallet.create_keys()
+            elif user_choice == '6':
+                pass
             elif user_choice == 'q':
                 # This will lead to the loop to exist
                 break
@@ -69,7 +74,7 @@ class Node:
                 print('Invalid blockchain!')
                 break
             print(
-                f'Balance of {self.id}: {self.blockchain.get_balance():6.2f}')
+                f'Balance of {self.wallet}: {self.blockchain.get_balance():6.2f}')
         else:
             print('User left!')
         print('Done')
