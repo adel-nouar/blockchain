@@ -42,7 +42,7 @@ class Node:
             print('4: Check transaction validity')
             print('5: Create wallet')
             print('6: Load wallet')
-            print('7: Load keys')
+            print('7: Save keys')
             print('q: Quit')
             user_choice = self.get_user_choice()
             if user_choice == '1':
