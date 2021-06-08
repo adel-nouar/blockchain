@@ -1,5 +1,5 @@
 from crypt import methods
-from flask import Flask, jsonify
+from flask import Flask, json, jsonify
 from wallet import Wallet
 from flask_cors import CORS
 from blockchain import Blockchain
@@ -13,6 +13,26 @@ CORS(app)
 @app.route('/', methods=['GET'])
 def get_ui():
     return 'This works!'
+
+
+@app.route('/mine', methods=['POST'])
+def mine():
+    block = blockchain.mine_block()
+    if block != None:
+        dict_block = block.__dict__.copy()
+        dict_block['transactions'] = [
+            tx.__dict__ for tx in dict_block['transactions']]
+        response = {
+            'message': 'Block added successfully.',
+            'block': block
+        }
+        return jsonify(response), 200
+    else:
+        response = {
+            'message': 'Adding a block failed.',
+            'wallet_set_up': wallet.public_key != None
+        }
+        return jsonify(response), 500
 
 
 @app.route('/chain', methods=['GET'])
