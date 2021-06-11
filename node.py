@@ -1,6 +1,7 @@
 from crypt import methods
 from inspect import signature
 from flask import Flask, json, jsonify, request, send_from_directory
+from flask.wrappers import Response
 from wallet import Wallet
 from flask_cors import CORS
 from blockchain import Blockchain
@@ -176,6 +177,21 @@ def add_node():
         'all_nodes': blockchain.get_peer_nodes()
     }
     return jsonify(response), 201
+
+
+@app.route('/node/<node_url>', methods=['DELETE'])
+def remove_node(node_url):
+    if node_url == '' or node_url == None:
+        response = {
+            'message': 'No node found.'
+        }
+        return jsonify(response), 400
+    blockchain.remove_peer_node(node_url)
+    response = {
+        'message': 'Node removed',
+        'all_nodes': blockchain.get_peer_nodes()
+    }
+    return jsonify(response), 200
 
 
 if __name__ == '__main__':
