@@ -2,6 +2,7 @@
 from utility.hash_util import hash_block, hash_string_256
 from wallet import Wallet
 
+
 class Verification:
     @staticmethod
     def valid_proof(transactions, last_hash, proof):
@@ -41,7 +42,7 @@ class Verification:
                 :transaction: The transaction that should be verified.
         """
         if check_funds:
-            sender_balance = get_balance()
+            sender_balance = get_balance(transaction.sender)
             return sender_balance >= transaction.amount and Wallet.verify_transaction(transaction=transaction)
         else:
             return Wallet.verify_transaction(transaction=transaction)
