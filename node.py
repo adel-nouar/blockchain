@@ -76,7 +76,7 @@ def get_balance():
         return jsonify(response), 500
 
 
-@app.route('/broadcast-transaction')
+@app.route('/broadcast-transaction', methods=['POST'])
 def broadcast_transaction():
     values = request.get_json()
     if not values:
@@ -91,7 +91,7 @@ def broadcast_transaction():
         }
         return jsonify(response), 400
     success = blockchain.add_transaction(
-        values['recipient'], values['signature'], values['sender'], values['amount'], is_receiving=True)
+        values['recipient'], values['sender'], values['signature'],  values['amount'], is_receiving=True)
     if success:
         response = {
             'message': 'Successfully added transaction.',
