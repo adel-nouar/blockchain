@@ -161,8 +161,8 @@ class Blockchain:
             :amount: The amount of coins sent with the transaction(default = 1.0)
         """
 
-        if self.public_key == None:
-            return False
+        # if self.public_key == None:
+        #     return False
         transaction = Transaction(sender, recipient, signature, amount)
         if Verification.verify_transaction(transaction, self.get_balance):
             self.__open_transactions.append(transaction)
