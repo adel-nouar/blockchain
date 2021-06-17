@@ -28,6 +28,7 @@ class Blockchain:
         self.public_key = public_key
         self.__peer_nodes = set()
         self.node_id = node_id
+        self.resolve_conflicts = False
         self.load_data()
 
     @property
