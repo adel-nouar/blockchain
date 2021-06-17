@@ -4,6 +4,7 @@ import hashlib as hl
 import json
 from lib2to3.pytree import convert
 import pickle
+from threading import local
 import requests
 
 from utility.hash_util import hash_block
@@ -252,6 +253,31 @@ class Blockchain:
         """
         self.__peer_nodes.add(node)
         self.save_data()
+
+    def resolve(self):
+        winner_chain = self.chain
+        replace = False
+        for node in self.__peer_nodes:
+            url = f'http://{node}/chain'
+            try:
+                response = requests.get(url)
+                node_chain = response.json()
+                node_chain = [Block(block['index'], block['previous_index'], [Transaction(
+                    tx['sender'], tx['recipient'], tx['signature'], tx['amount']) for tx in block['transactions']],
+                    block['proof'], block['timestamp']) for block in node_chain]
+                node_chain_length = len(node_chain)
+                local_chain_length = len(winner_chain)
+                if node_chain_length > local_chain_length and Verification.verify_chain(node_chain):
+                    winner_chain = node_chain
+                    replace = True
+            except requests.exceptions.ConnectionError:
+                continue
+        self.resolve_conflicts = False
+        self.chain = winner_chain
+        if replace:
+            self.__open_transactions = []
+        self.save_data()
+        return replace
 
     def remove_peer_node(self, node):
         """ Removes a node from the peer node set.
