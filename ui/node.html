@@ -212,12 +212,8 @@
         new Vue({
             el: '#app',
             data: {
-                blockchain: [
-                    
-                ],
-                openTransactions: [
-                    
-                ],
+                blockchain: [],
+                openTransactions: [],
                 wallet: null,
                 view: 'chain',
                 walletLoading: false,
@@ -237,7 +233,7 @@
                     if (this.view === 'chain') {
                         return this.blockchain;
                     } else {
-                        return this.openTransactions
+                        return this.openTransactions;
                     }
                 }
             },
@@ -249,7 +245,7 @@
                     axios.post('/wallet')
                         .then(function(response){
                             vm.error = null;
-                            vm.success = 'Created Wallet! Public Key:'+ response.data.public_key + ', Private Key: '+ response.data.private_key
+                            vm.success = 'Created Wallet! Public Key:'+ response.data.public_key + ', Private Key: '+ response.data.private_key;
                             vm.wallet = {
                                 public_key: response.data.public_key,
                                 private_key: response.data.private_key
@@ -271,7 +267,7 @@
                     axios.get('/wallet')
                         .then(function(response){
                             vm.error = null;
-                            vm.success = 'Created Wallet! Public Key:'+ response.data.public_key + ', Private Key: '+ response.data.private_key
+                            vm.success = 'Created Wallet! Public Key:'+ response.data.public_key + ', Private Key: '+ response.data.private_key;
                             vm.wallet = {
                                 public_key: response.data.public_key,
                                 private_key: response.data.private_key
@@ -308,7 +304,7 @@
                         })
                 },
                 onMine: function() {
-                    var vm = this
+                    var vm = this;
                     axios.post('/mine')
                         .then(function(response){
                             vm.error = null;
@@ -322,7 +318,7 @@
                         })
                 },
                 onResolve: function(){
-                    var vm = this
+                    var vm = this;
                     axios.post('/resolve-conflicts')
                         .then(function(response){
                             vm.error = null;
@@ -336,28 +332,28 @@
                 onLoadData: function () {
                     if (this.view === 'chain') {
                         // Load blockchain data
-                        var vm = this
-                        this.dataLoading = true
+                        var vm = this;
+                        this.dataLoading = true;
                         axios.get('/chain')
                             .then(function(response){
-                                vm.blockchain = response.data
-                                vm.dataLoading = false
+                                vm.blockchain = response.data;
+                                vm.dataLoading = false;
                             })
                             .catch(function(error) {
-                                vm.dataLoading = false
-                                vm.error = 'Something went wrong.'
+                                vm.dataLoading = false;
+                                vm.error = 'Something went wrong.';
                             });
                     } else {
                         // Load transaction data
-                        var vm = this
+                        var vm = this;
                         axios.get('/transactions')
                             .then(function(response){
-                                vm.openTransactions = response.data
-                                vm.dataLoading = false
+                                vm.openTransactions = response.data;
+                                vm.dataLoading = false;
                             })
                             .catch(function(error) {
-                                vm.dataLoading = false
-                                vm.error = 'Something went wrong.'
+                                vm.dataLoading = false;
+                                vm.error = 'Something went wrong.';
                             });
                        
                     }
