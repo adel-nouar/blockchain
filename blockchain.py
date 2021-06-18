@@ -57,12 +57,16 @@ class Blockchain:
                 updated_blockchain = []
                 for block in blockchain:
                     converted_tx = [Transaction(
-                        tx['sender'], tx['recipient'], tx['signature'], tx['amount']) for tx in block['transactions']]
-                    # converted_tx = [OrderedDict(
-                    #     [('sender', tx['sender']), ('recipient', tx['recipient']), ('amount', tx['amount'])])
-                    #     for tx in block['transactions']]
+                        tx['sender'],
+                        tx['recipient'],
+                        tx['signature'],
+                        tx['amount']) for tx in block['transactions']]
                     updated_block = Block(
-                        block['index'], block['previous_hash'], converted_tx, block['proof'], block['timestamp'])
+                        block['index'],
+                        block['previous_hash'],
+                        converted_tx,
+                        block['proof'],
+                        block['timestamp'])
                     updated_blockchain.append(updated_block)
                 self.chain = updated_blockchain
                 open_transactions = json.loads(file_content[1][:-1])
@@ -86,8 +90,16 @@ class Blockchain:
         """Save blockchain + open transactions snapshot to a file."""
         try:
             with open('blockchain-{}.json'.format(self.node_id), mode='w') as f:
-                saveable_chain = [block.__dict__ for block in [Block(block_el.index, block_el.previous_hash, [
-                    tx.__dict__ for tx in block_el.transactions], block_el.proof, block_el.timestamp) for block_el in self.__chain]]
+                saveable_chain = [
+                    block.__dict__ for block in
+                    [
+                        Block(block_el.index,
+                              block_el.previous_hash,
+                              [tx.__dict__ for tx in block_el.transactions],
+                              block_el.proof,
+                              block_el.timestamp) for block_el in self.__chain
+                    ]
+                ]
                 f.write(json.dumps(saveable_chain))
                 f.write('\n')
                 saveable_tx = [
@@ -111,8 +123,8 @@ class Blockchain:
     def get_balance(self, sender=None):
         """Calculate and return the balance for a participant.
         """
-        if sender == None:
-            if self.public_key == None:
+        if sender is None:
+            if self.public_key is None:
                 return None
             participant = self.public_key
         else:
@@ -185,7 +197,7 @@ class Blockchain:
 
     def mine_block(self):
         """Create a new block and add open transactions to it."""
-        if self.public_key == None:
+        if self.public_key is None:
             return None
         # Fetch the currently last block of the blockchain
         last_block = self.__chain[-1]
@@ -262,9 +274,17 @@ class Blockchain:
             try:
                 response = requests.get(url)
                 node_chain = response.json()
-                node_chain = [Block(block['index'], block['previous_index'], [Transaction(
-                    tx['sender'], tx['recipient'], tx['signature'], tx['amount']) for tx in block['transactions']],
-                    block['proof'], block['timestamp']) for block in node_chain]
+                node_chain = [
+                    Block(block['index'],
+                          block['previous_index'],
+                          [
+                        Transaction(
+                            tx['sender'],
+                            tx['recipient'],
+                            tx['signature'], tx['amount']) for tx in block['transactions']
+                    ],
+                        block['proof'],
+                        block['timestamp']) for block in node_chain]
                 node_chain_length = len(node_chain)
                 local_chain_length = len(winner_chain)
                 if node_chain_length > local_chain_length and Verification.verify_chain(node_chain):
