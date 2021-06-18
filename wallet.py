@@ -7,7 +7,7 @@ import Crypto.Random
 
 
 class Wallet:
-    def __init__(self, node_id) -> None:
+    def __init__(self, node_id):
         self.private_key = None
         self.public_key = None
         self.node_id = node_id
@@ -66,5 +66,5 @@ class Wallet:
         public_key = RSA.import_key(binascii.unhexlify(transaction.sender))
         verifier = PKCS1_v1_5.new(public_key)
         h = SHA256.new((str(transaction.sender) + str(transaction.recipient) +
-                       str(transaction.amount)).encode('utf8'))
+                        str(transaction.amount)).encode('utf8'))
         return verifier.verify(h, binascii.unhexlify(transaction.signature))

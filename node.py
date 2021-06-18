@@ -1,9 +1,6 @@
-from crypt import methods
-from inspect import signature
 from flask import Flask, json, jsonify, request, send_from_directory
-from flask.wrappers import Response
-from wallet import Wallet
 from flask_cors import CORS
+from wallet import Wallet
 from blockchain import Blockchain
 
 app = Flask(__name__)
@@ -87,11 +84,15 @@ def broadcast_transaction():
     required = ['sender', 'recipient', 'amount', 'signature']
     if not all(key in values for key in required):
         response = {
-            'message': 'Some data is missing.'
+            'message': 'Some data are missing.'
         }
         return jsonify(response), 400
     success = blockchain.add_transaction(
-        values['recipient'], values['sender'], values['signature'],  values['amount'], is_receiving=True)
+        values['recipient'], 
+	values['sender'], 
+	values['signature'],  
+	values['amount'], 
+	is_receiving=True)
     if success:
         response = {
             'message': 'Successfully added transaction.',
@@ -120,7 +121,7 @@ def broadcast_block():
         return jsonify(response), 400
     if 'block' not in values:
         response = {
-            'message': 'Some data is missing.'
+            'message': 'Some data are missing.'
         }
         return jsonify(response), 400
     block = values['block']
@@ -154,7 +155,7 @@ def add_transaction():
         response = {
             'message': 'No wallet set up.'
         }
-        return jsonify(response)
+        return jsonify(response), 400
     values = request.get_json()
     if not values:
         response = {
@@ -208,7 +209,7 @@ def mine():
             'block': dict_block,
             'funds': blockchain.get_balance()
         }
-        return jsonify(response), 200
+        return jsonify(response), 201
     else:
         response = {
             'message': 'Adding a block failed.',
